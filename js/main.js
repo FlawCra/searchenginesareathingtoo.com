@@ -2,30 +2,9 @@
 (async function ($) {
     "use strict";
 
-    if(localStorage.getItem("enable-notifications") == "checked") {
-        var el = $("[name=enable-notifications]")[0];
-        if(Notification.permission !== "granted") {
-            Notification.requestPermission();
-            el.checked = false;
-        } else {
-            el.checked = true;
-        }
-    }
-
     if(localStorage.getItem("enable-sound") == "checked") {
         localStorage.setItem("enable-sound", "");
     }
-
-    
-    
-    $("[name=enable-notifications]").change((el) => {
-        if(Notification.permission !== "granted") {
-            Notification.requestPermission();
-            el.currentTarget.checked = false;
-            return;
-        }
-        localStorage.setItem("enable-notifications",el.currentTarget.checked ? "checked" : "");
-    });
 
     $("[name=enable-sound]").change((el) => {
         if(Notification.permission !== "granted") {
@@ -35,16 +14,6 @@
         }
         localStorage.setItem("enable-sound",el.currentTarget.checked ? "checked" : "");
     });
-
-    var url = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
-    var live_sound = "https://cdn.flawcra.cc/12/DATA/60ac5f5dae9a5c2b877cdd58988a1e32e5b5a0445a54210937fa28fa66c946f0c4591e5b0181f4d97410814d3f048cd11b15a512ae6d6dce5fa38035e3432b61/689394792700025409/snapshot_live.wav";
-    var livetext = document.getElementById("livetext");
-    var latest = document.getElementById("latest");
-    var phoenix_stream = document.getElementById("phoenix_stream");
-    var latest_snapshot = "";
-    var latest_snapshot_released = null;
-    var not_live = `It's not live yet 😔`;
-    var live_now = `It's live now! 🎉`;
     
     var res = await fetch(url);
     var json = await res.json();
